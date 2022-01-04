@@ -1,0 +1,9 @@
+body {
+  background-color: rgb(142, 142, 142);
+}
+
+.App {
+  text-align: center;
+  width: 300px;
+  margin: auto;
+}
