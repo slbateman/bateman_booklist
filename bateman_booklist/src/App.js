@@ -1,21 +1,23 @@
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Form, Button, Card, Row } from "react-bootstrap";
+import { selectBookList, updateBookList } from "./store/bookListSlice";
 
 function App() {
-  const [books, setBooks] = useState([]);
+  const books = useSelector(selectBookList);
+  const dispatch = useDispatch()
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [synopsis, setSynopsis] = useState("");
 
-  const updateBookList = (e) => {
-    setBooks([
-      ...books,
+  const newBook = (e) => {
+    dispatch(updateBookList(
       {
         title: title,
         author: author,
         synopsis: synopsis,
       },
-    ]);
+    ));
     setTitle("");
     setAuthor("");
     setSynopsis("");
@@ -27,7 +29,7 @@ function App() {
         <Form
           onSubmit={(e) => {
             e.preventDefault();
-            updateBookList();
+            newBook();
           }}
         >
           <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -81,14 +83,12 @@ function App() {
       <div>
         <Row>
           {books.map((book, index) => (
-            <Card className="book-card" style={{ width: "18rem" }}>
+            <Card className="book-card" key={`bookCard${index}`} style={{ width: "18rem" }}>
               <Card.Body>
                 <Card.Title>{index + 1}</Card.Title>
-                <Card.Title>
-                  <h2>{book.title}</h2>
+                <Card.Title>{book.title}
                 </Card.Title>
-                <Card.Text>
-                  <h3>{book.author}</h3>
+                <Card.Text>{book.author}
                 </Card.Text>
                 <Card.Text>{book.synopsis}</Card.Text>
               </Card.Body>
