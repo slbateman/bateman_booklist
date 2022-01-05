@@ -3,7 +3,7 @@ import { getBooks, postBook } from "../controllers/books.js";
 
 const router = express();
 
-router.get("/get", getBooks);
-router.post("/post", postBook);
+router.get("/", getBooks);
+router.post("/", postBook);
 
 export default router;

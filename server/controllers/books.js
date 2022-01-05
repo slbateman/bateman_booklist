@@ -4,10 +4,11 @@ import Books from "../models/books.js";
 export const getBooks = async (req, res) => {
   try {
     const books = await Books.find();
-    console.log("GET successful");
-    res.send(200).json(books);
+    console.log(books);
+    res.status(200).json(books);
   } catch (error) {
-    res.send(404).json({ message: error });
+    res.status(404).json({ message: error });
+    return;
   }
 };
 
@@ -17,8 +18,9 @@ export const postBook = async (req, res) => {
   try {
     await newBook.save();
     console.log("POST successful");
-    res.send(201).json(newBook);
+    res.status(201).json(newBook);
   } catch (error) {
-    res.send(409).json({ message: error });
+    res.status(409).json({ message: error });
+    return;
   }
 };

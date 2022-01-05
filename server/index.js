@@ -11,9 +11,9 @@ mongoose.connect(CONNECTION, (err) => {
     console.log("connected to bookList database")
 })
 
-app.use(express.json())
-app.use(express.urlencoded())
+app.use(express.json({ extended: true }))
+app.use(express.urlencoded({ extended: true }))
 
-app.use('/', router)
+app.use('/api', router)
 
 app.listen(PORT, () => {console.log(`Server running on port ${PORT}`)})
