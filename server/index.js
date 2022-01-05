@@ -1,26 +1,15 @@
 import express from "express"
+import mongoose from "mongoose"
+import router from "./routes/books.js"
+
 const app = express()
 const PORT = 5000
+const CONNECTION = ""
 
 app.use(express.json())
 app.use(express.urlencoded())
 
-app.get('/get', (req, res) => {
-    try {
-        console.log("GET successful")
-        res.send("GET successful")
-    } catch (error) {
-        res.send(error)
-    }
-})
-
-app.post('/post', (req, res) => {
-    try {
-        console.log("POST successful")
-        res.send("POST successful")
-    } catch (error) {
-        res.send(error)
-    }
-})
+app.get('/', router)
+app.post('/', router)
 
 app.listen(PORT, () => {console.log(`Server running on port ${PORT}`)})
