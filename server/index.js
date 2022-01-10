@@ -1,5 +1,6 @@
 import express from "express"
 import mongoose from "mongoose"
+import cors from "cors"
 import bookRouter from "./routes/books.js"
 import testRouter from "./routes/tests.js"
 
@@ -14,6 +15,7 @@ mongoose.connect(CONNECTION, (err) => {
 
 app.use(express.json({ extended: true }))
 app.use(express.urlencoded({ extended: true }))
+app.use(cors())
 
 app.use('/api', bookRouter)
 app.use('/test', testRouter)
