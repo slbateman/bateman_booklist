@@ -8,13 +8,16 @@ export const bookListSlice = createSlice({
     bookList,
   },
   reducers: {
-    updateBookList: (state, action) => {
+    addBook: (state, action) => {
       state.bookList.push(action.payload);
     },
+    allBooks: (state, action) => {
+      state.bookList = action.payload
+    }
   },
 });
 
-export const { updateBookList } = bookListSlice.actions;
+export const { addBook, allBooks } = bookListSlice.actions;
 
 export const selectBookList = (state) => state.bookList.bookList;
 

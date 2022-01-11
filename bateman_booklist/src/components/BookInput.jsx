@@ -1,14 +1,30 @@
 import React from "react";
+import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import {useDispatch} from "react-redux"
+import { postBook } from "../actions/books";
 
-function BookInput({ title, setTitle, author, setAuthor, synopsis, setSynopsis, newBook }) {
+function BookInput() {
+
+  const dispatch = useDispatch()
+
+  const [bookData, setBookData] = useState()
+  const handleChange = (e) => {
+    setBookData({...bookData, [e.target.name]: e.target.value})
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    dispatch(postBook(bookData))
+    e.target.title.value = ""
+    e.target.author.value = ""
+    e.target.synopsis.value = ""
+  }
+
   return (
     <div className="book-input">
       <Form
-        onSubmit={(e) => {
-          e.preventDefault();
-          newBook();
-        }}
+        onSubmit={handleSubmit}
       >
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>
@@ -17,10 +33,8 @@ function BookInput({ title, setTitle, author, setAuthor, synopsis, setSynopsis, 
           <Form.Control
             type="text"
             placeholder="Enter Book Title"
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
+            name="title"
+            onChange={handleChange}
           />
         </Form.Group>
 
@@ -31,10 +45,8 @@ function BookInput({ title, setTitle, author, setAuthor, synopsis, setSynopsis, 
           <Form.Control
             type="text"
             placeholder="Enter Author Name"
-            value={author}
-            onChange={(e) => {
-              setAuthor(e.target.value);
-            }}
+            name="author"
+            onChange={handleChange}
           />
         </Form.Group>
 
@@ -46,10 +58,8 @@ function BookInput({ title, setTitle, author, setAuthor, synopsis, setSynopsis, 
             as="textarea"
             rows={3}
             placeholder="Enter Synopsis"
-            value={synopsis}
-            onChange={(e) => {
-              setSynopsis(e.target.value);
-            }}
+            name="synopsis"
+            onChange={handleChange}
           />
         </Form.Group>
 
