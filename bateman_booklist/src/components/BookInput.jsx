@@ -1,31 +1,49 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
-import {useDispatch} from "react-redux"
-import { postBook } from "../actions/books";
+import { useDispatch } from "react-redux";
+import { patchBook, postBook } from "../actions/books";
 
-function BookInput() {
+function BookInput({ currentID, setCurrentID, books }) {
+  const dispatch = useDispatch();
 
-  const dispatch = useDispatch()
+  const bookObj = {
+    title: "",
+    author: "",
+    synopsis: "",
+  };
+  const [bookData, setBookData] = useState(bookObj);
 
-  const [bookData, setBookData] = useState()
+  const foundBook = books.find((e) => e._id === currentID);
+
+  const clear = () => {
+    setCurrentID(0);
+    setBookData(bookObj);
+  };
+
   const handleChange = (e) => {
-    setBookData({...bookData, [e.target.name]: e.target.value})
-  }
+    setBookData({ ...bookData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    dispatch(postBook(bookData))
-    e.target.title.value = ""
-    e.target.author.value = ""
-    e.target.synopsis.value = ""
-  }
+    e.preventDefault();
+    if (currentID === 0) {
+      dispatch(postBook(bookData));
+    } else {
+      dispatch(patchBook(currentID, bookData));
+    }
+    clear();
+  };
+
+  useEffect(() => {
+    if (foundBook) setBookData(foundBook)
+  }, [foundBook])
 
   return (
+    
     <div className="book-input">
-      <Form
-        onSubmit={handleSubmit}
-      >
+      <h1>{currentID===0 ? "Add New Book" : `Editing: ${foundBook.title}` }</h1>
+      <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>
             <h5>Title</h5>
@@ -34,6 +52,7 @@ function BookInput() {
             type="text"
             placeholder="Enter Book Title"
             name="title"
+            value={bookData.title}
             onChange={handleChange}
           />
         </Form.Group>
@@ -46,6 +65,7 @@ function BookInput() {
             type="text"
             placeholder="Enter Author Name"
             name="author"
+            value={bookData.author}
             onChange={handleChange}
           />
         </Form.Group>
@@ -59,6 +79,7 @@ function BookInput() {
             rows={3}
             placeholder="Enter Synopsis"
             name="synopsis"
+            value={bookData.synopsis}
             onChange={handleChange}
           />
         </Form.Group>

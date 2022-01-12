@@ -1,7 +1,11 @@
 import React from "react";
-import { Card, Row } from "react-bootstrap";
+import {useDispatch} from "react-redux"
+import { Button, Card, Row } from "react-bootstrap";
+import { deleteBook } from "../actions/books";
 
-function BookList({ books }) {
+function BookList({ setCurrentID, books }) {
+  const dispatch = useDispatch()
+
   return (
     <div>
       <Row>
@@ -14,8 +18,10 @@ function BookList({ books }) {
             <Card.Body>
               <Card.Title>{index + 1}</Card.Title>
               <Card.Title>{book.title}</Card.Title>
-              <Card.Text>{book.author}</Card.Text>
+              <Card.Text style={{fontSize: ".75em"}} >{book.author}</Card.Text>
               <Card.Text>{book.synopsis}</Card.Text>
+              <Button onClick={()=>setCurrentID(book._id)} >Edit</Button>
+              <Button onClick={()=>dispatch(deleteBook(book._id))} >Delete</Button>
             </Card.Body>
           </Card>
         ))}
